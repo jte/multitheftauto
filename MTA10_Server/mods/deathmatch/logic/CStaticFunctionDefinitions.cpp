@@ -3515,6 +3515,7 @@ bool CStaticFunctionDefinitions::GiveWeaponAmmo ( CElement* pElement, unsigned c
         CPed* pPed = static_cast < CPed* > ( pElement );
         if ( pPed->IsSpawned () )
         {
+            pPed->SetWeaponTotalAmmo ( usAmmo, CWeaponNames::GetSlotFromWeapon ( ucWeaponID ));
             CBitStream BitStream;
             BitStream.pBitStream->WriteCompressed ( pPed->GetID () );
 
