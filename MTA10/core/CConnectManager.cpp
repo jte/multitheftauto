@@ -155,7 +155,16 @@ bool CConnectManager::Abort ( void )
     m_usPort = 0;
     m_bIsConnecting = false;
     m_tConnectStarted = 0;
-
+    // Remove recently added server
+    in_addr Address;
+    if ( CServerListItem::Parse ( g_pConnectManager->m_strHost.c_str (), Address ) )
+    {
+        CServerBrowser* pServerBrowser = CCore::GetSingleton ().GetLocalGUI ()->GetMainMenu ()->GetServerBrowser ();
+        CServerList* pRecentList = pServerBrowser->GetRecentList ();
+        CServerListItem RecentServer ( Address, g_pConnectManager->m_usPort + SERVER_LIST_QUERY_PORT_OFFSET );
+        pRecentList->Remove ( RecentServer );
+        pServerBrowser->SaveRecentlyPlayedList();
+    }
     // Success
     return true;
 }
