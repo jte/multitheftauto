@@ -76,28 +76,28 @@ returnhere:
     return NULL;
 }
 
-/**
- * \todo Need to simulate this manually (loop and IsNear...)
- */
 VOID CExplosionManagerSA::RemoveAllExplosionsInArea ( CVector * vecPosition, FLOAT fRadius )
 {
     DEBUG_TRACE("VOID CExplosionManagerSA::RemoveAllExplosionsInArea ( CVector * vecPosition, FLOAT fRadius )");
-    
-/*  DWORD dwFunction = FUNC_RemoveAllExplosionsInArea;
-    CVector * vecPos = (CVector *)vecPosition;
-    FLOAT fX = vecPos->fX;
-    FLOAT fY = vecPos->fY;
-    FLOAT fZ = vecPos->fZ;
-    
-    _asm
+    for(int i = 0; i < MAX_EXPLOSIONS; i++)
     {
-        push    fRadius
-        push    fZ
-        push    fY
-        push    fX
-        call    dwFunction
-        add     esp, 0x10
-    }*/
+        if(Explosions[i]->IsActive())
+        {
+            CVector
+                *expPosition;
+            expPosition = new CVector;
+            expPosition = Explosions[i]->GetExplosionPosition();
+            float
+                DiffX = vecPosition->fX - expPosition->fX,
+                DiffY = vecPosition->fY - expPosition->fY,
+                DiffZ = vecPosition->fZ - expPosition->fZ;
+            delete expPosition;
+            if(sqrt(DiffX * DiffX + DiffY * DiffY + DiffZ * DiffZ) <= fRadius) // taken from DistanceBetweenPoints3D
+            {
+                Explosions[i]->Remove();
+            }
+        }
+    }
 }
 
 VOID CExplosionManagerSA::RemoveAllExplosions (  )
