@@ -1404,7 +1404,23 @@ bool CStaticFunctionDefinitions::SetElementModel ( CElement* pElement, unsigned 
             CPed * pPed = static_cast < CPed* > ( pElement );
             if ( pPed->GetModel () == usModel ) return false;
             if ( !CPlayerManager::IsValidPlayerModel ( usModel ) ) return false;
+            bool
+	        wasOnFire = false;
+            if(pPed->IsOnFire())
+            {
+                wasOnFire = true;
+	    }
             pPed->SetModel ( usModel );
+            if(wasOnFire)
+            {
+                CBitStream 
+		    BitStream;
+                pPed->SetOnFire(true);
+                BitStream.pBitStream->WriteCompressed ( pPed->GetID () );
+                BitStream.pBitStream->WriteBit(true);
+                m_pPlayerManager->BroadcastOnlyJoined ( CLuaPacket ( SET_PED_ON_FIRE, *BitStream.pBitStream ) );
+		pPed->SetOnFire(true);
+	    }
             break;
         }
         case CElement::VEHICLE:
