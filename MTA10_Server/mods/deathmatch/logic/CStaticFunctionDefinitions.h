@@ -548,6 +548,10 @@ public:
     static unsigned long        GetNetcodeVersion                   ( );
     static const char*          GetOperatingSystemName              ( );
     static const char*          GetVersionBuildTag                  ( );
+
+    // googles funcs
+    static bool					SetGoogleState						( bool bGoogleType, bool bEnabled );				
+    static bool					GetGoogleState						( bool bGoogleType );
 };
 
 #endif
